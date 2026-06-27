@@ -1,0 +1,171 @@
+# From documents to a RAG corpus in R
+
+## Overview
+
+**doclingr** turns messy documents — PDF, DOCX, PPTX, HTML, images —
+into structured, AI-ready data. It wraps the
+[Docling](https://github.com/docling-project/docling) Python library
+through [reticulate](https://rstudio.github.io/reticulate/), giving you
+layout-aware parsing, table extraction and retrieval-ready chunking with
+a small, tidy R API.
+
+This vignette walks the full path: **document → structure → tables →
+chunks → embeddings**, i.e. everything you need to stand up a
+retrieval-augmented generation (RAG) corpus from R.
+
+## One-time setup
+
+doclingr needs the Docling Python package. Install it once into a
+managed environment, then restart R:
+
+``` r
+
+library(doclingr)
+
+install_docling()      # creates an "r-docling" Python environment
+# ...restart R...
+docling_available()    # TRUE once the backend is ready
+```
+
+## Converting a document
+
+[`docling_convert()`](https://strategicprojects.github.io/doclingr/reference/docling_convert.md)
+runs Docling’s understanding pipeline over a file path or URL and
+returns a lightweight handle:
+
+``` r
+
+doc <- docling_convert("https://arxiv.org/pdf/2408.09869")
+doc
+#> <docling_document>
+#> source: https://arxiv.org/pdf/2408.09869
+#> pages: 9
+#> tables: 5
+#> figures: 3
+```
+
+Tune the pipeline when you need to. OCR and the accurate table model
+cost time; turn them down for born-digital documents or large batches:
+
+``` r
+
+doc <- docling_convert(
+  "report.pdf",
+  ocr = FALSE,           # skip OCR for born-digital PDFs
+  table_mode = "fast",   # "accurate" (default) or "fast"
+  device = "mps"         # "auto", "cpu", "cuda", "mps"
+)
+
+# Convert many sources in one batch
+docs <- docling_convert(c("a.pdf", "b.docx", "c.html"))
+```
+
+## Exporting structure
+
+Render the understood document into the format your downstream tools
+expect:
+
+``` r
+
+as_markdown(doc)   # layout-aware Markdown
+as_text(doc)       # plain text
+as_html(doc)       # HTML
+as_json(doc)       # structured DoclingDocument as a nested R list
+as_doctags(doc)    # Docling's DocTags representation
+```
+
+## Tables as tibbles
+
+Every detected table comes back as a tibble, in document order:
+
+``` r
+
+tables <- docling_tables(doc)
+length(tables)
+tables[[1]]
+#> # A tibble: 12 x 4
+#>    Method     Recall Precision  F1
+#>    <chr>       <chr>     <chr> <chr>
+#>  1 Baseline    0.81      0.78  0.79
+#>  ...
+```
+
+## Figures
+
+Pull figure captions and pages, and optionally save the images (requires
+`images = TRUE` at conversion time):
+
+``` r
+
+doc <- docling_convert("paper.pdf", images = TRUE)
+figs <- docling_figures(doc, image_dir = "figures")
+figs
+#> # A tibble: 3 x 4
+#>   figure_id caption                 page image_path
+#>       <int> <chr>                  <int> <chr>
+#> 1         1 "Figure 1: pipeline ..."   2 figures/figure-001.png
+#> ...
+```
+
+## Chunking for retrieval
+
+[`docling_chunk()`](https://strategicprojects.github.io/doclingr/reference/docling_chunk.md)
+splits the document into context-rich chunks. The default hybrid chunker
+is token-aware: match its tokenizer to your embedding model and set a
+budget so chunks fit your model’s context.
+
+``` r
+
+chunks <- docling_chunk(
+  doc,
+  tokenizer = "BAAI/bge-small-en-v1.5",
+  max_tokens = 512
+)
+chunks
+#> # A tibble: 84 x 7
+#>    chunk_id text         raw_text     n_chars headings   pages   n_doc_items
+#>       <int> <chr>        <chr>          <int> <list>     <list>        <int>
+#>  1        1 "Docling: ..." "Docling..."     412 <chr [2]>  <int [1]>         3
+#>  ...
+```
+
+Each chunk’s `text` is *contextualized* — enriched with its heading path
+and table context — which is the form you typically embed. The
+unmodified text is kept in `raw_text`.
+
+## From chunks to embeddings
+
+doclingr is deliberately provider-agnostic about embeddings: you supply
+a function that maps a character vector to vectors, and
+[`docling_embed()`](https://strategicprojects.github.io/doclingr/reference/docling_embed.md)
+handles batching and tidy assembly. Here is a sketch against an
+OpenAI-style API:
+
+``` r
+
+embed_api <- function(texts) {
+  # Call your embedding endpoint; return a matrix with one row per text.
+  # e.g. httr2 -> a list of vectors, or a matrix.
+}
+
+corpus <- doc |>
+  docling_chunk(tokenizer = "BAAI/bge-small-en-v1.5", max_tokens = 512) |>
+  docling_embed(embed_api, batch_size = 64)
+
+corpus
+#> # ... your chunks plus `embedding` (list-column) and `n_dim`
+```
+
+At this point `corpus` is a tidy table of chunks with their headings,
+pages and embeddings — ready to write to a vector store, a database, or
+an in-memory nearest-neighbour index for RAG.
+
+## Where to go next
+
+- Use `as_json(doc)` when you need the full structural detail Docling
+  captured.
+- Persist `corpus` (for example with `arrow::write_parquet()`) to avoid
+  re-converting and re-embedding.
+- See the [Docling
+  documentation](https://docling-project.github.io/docling/) for the
+  breadth of supported formats and pipeline options.

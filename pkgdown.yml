@@ -1,0 +1,9 @@
+pandoc: 3.8.3
+pkgdown: 2.2.0
+pkgdown_sha: ~
+articles:
+  doclingr: doclingr.html
+last_built: 2026-06-27T20:51Z
+urls:
+  reference: https://strategicprojects.github.io/doclingr/reference
+  article: https://strategicprojects.github.io/doclingr/articles
