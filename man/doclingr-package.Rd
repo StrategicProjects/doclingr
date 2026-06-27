@@ -6,22 +6,29 @@
 \alias{doclingr-package}
 \title{doclingr: Document Intelligence for R via Docling}
 \description{
+\if{html}{\figure{logo.svg}{options: style='float: right' alt='logo' width='120'}}
+
 An R interface to Docling, a document-understanding library that converts PDF, DOCX, PPTX, HTML and image documents into structured, AI-ready data. doclingr wraps the Docling Python package through 'reticulate' to extract layout-aware text, tables and metadata, export to Markdown or JSON, and split documents into context-rich chunks suitable for retrieval-augmented generation (RAG) and embedding pipelines.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://github.com/StrategicProjects/doclingr}
+  \item \url{https://strategicprojects.github.io/doclingr/}
   \item Report bugs at \url{https://github.com/StrategicProjects/doclingr/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: André Leite \email{leite@de.ufpe.br}
+\strong{Maintainer}: Andre Leite \email{leite@castlab.org}
 
 Authors:
 \itemize{
-  \item André Leite \email{leite@de.ufpe.br}
+  \item Andre Leite \email{leite@castlab.org}
+  \item Marcos Wasilew \email{marcos.wasilew@gmail.com}
+  \item Hugo Vasconcelos \email{hugo.vasconcelos@ufpe.br}
+  \item Carlos Amorin \email{carlos.agaf@ufpe.br}
+  \item Diogo Bezerra \email{diogo.bezerra@ufpe.br}
 }
 
 }

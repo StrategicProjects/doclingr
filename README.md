@@ -1,7 +1,9 @@
-# doclingr <img src="https://img.shields.io/badge/status-experimental-orange" align="right" />
+# doclingr <img src="man/figures/logo.svg" align="right" height="160" alt="doclingr logo" />
 
 > Document intelligence for R — turn messy PDFs, Office files and HTML into
 > AI-ready, structured data.
+
+![status: experimental](https://img.shields.io/badge/status-experimental-orange)
 
 **doclingr** is an R interface to [Docling](https://github.com/docling-project/docling),
 an open-source document-understanding library. It brings layout-aware PDF/DOCX/PPTX/HTML
@@ -12,6 +14,12 @@ R already has `pdftools`, `tabulizer`, `officer`, `readtext` and friends, but no
 single "document intelligence for RAG" package. doclingr aims to fill that gap:
 take a document, understand its layout, extract its tables, preserve its
 structure, chunk it, and hand it back ready for search and embeddings.
+
+## How it works
+
+<p align="center">
+  <img src="man/figures/workflow.svg" width="100%" alt="doclingr pipeline: document -> convert -> extract -> chunk -> embed" />
+</p>
 
 ## Installation
 
