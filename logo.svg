@@ -51,9 +51,9 @@
   </g>
 
   <!-- wordmark -->
-  <text x="260" y="468" text-anchor="middle" font-size="74" font-weight="800" letter-spacing="-2">
+  <text x="260" y="462" text-anchor="middle" font-size="74" font-weight="800" letter-spacing="-2">
     <tspan fill="#FFFFFF">docling</tspan><tspan fill="#19C3B2">r</tspan>
   </text>
-  <text x="260" y="506" text-anchor="middle" font-size="20" font-weight="600"
-        letter-spacing="2" fill="#8FA6BE">documents &#8594; AI-ready data</text>
+  <text x="260" y="498" text-anchor="middle" font-size="15.5" font-weight="600"
+        letter-spacing="1" fill="#8FA6BE">documents &#8594; AI-ready data</text>
 </svg>
