@@ -9,7 +9,7 @@ inst/doc
 /doc/
 /Meta/
 docs/
-..Rcheck/
+*.Rcheck/
 *.tar.gz
 
 # === OS / editors ===

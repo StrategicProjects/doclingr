@@ -1,0 +1,80 @@
+---
+title: "Extracting tables from documents"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Extracting tables from documents}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = FALSE)
+```
+
+Tables are where document intelligence earns its keep: they carry the numbers,
+but they are exactly what naive text extraction mangles. doclingr uses Docling's
+table-structure model to recover cells, then hands each table back as a tibble.
+
+## The basics
+
+`docling_tables()` returns a list with one tibble per detected table, in
+document order:
+
+```{r}
+library(doclingr)
+
+doc <- docling_convert("financials.pdf")
+tables <- docling_tables(doc)
+
+length(tables)      # how many tables Docling found
+tables[[1]]         # the first table, as a tibble
+```
+
+Each tibble carries a `page` attribute recording where the table came from:
+
+```{r}
+attr(tables[[1]], "page")
+```
+
+## Accurate vs. fast table structure
+
+The table model has two modes. The default `"accurate"` recovers complex
+structure (spanning cells, nested headers) at some cost; `"fast"` is quicker and
+often enough for clean grids:
+
+```{r}
+doc_fast <- docling_convert("financials.pdf", table_mode = "fast")
+docling_tables(doc_fast)[[1]]
+```
+
+## Working with the extracted tables
+
+Because each table is a tibble, the whole tidyverse is available. For example,
+tag every table with its page and stack them into one long frame:
+
+```{r}
+library(dplyr)
+library(purrr)
+
+all_tables <- docling_tables(doc) |>
+  imap(\(tbl, i) mutate(tbl, .table = i, .page = attr(tbl, "page"))) |>
+  list_rbind()
+
+all_tables
+```
+
+Or write each table to its own CSV:
+
+```{r}
+tables <- docling_tables(doc)
+iwalk(tables, \(tbl, i) readr::write_csv(tbl, sprintf("table-%02d.csv", i)))
+```
+
+## Tips
+
+* Column types come back as character; coerce with `readr::type_convert()` or
+  `dplyr::mutate(across(...))` once you know each table's schema.
+* If a scanned (image-only) PDF returns empty tables, make sure OCR is on
+  (`docling_convert(..., ocr = TRUE)`, the default).
+* For very wide tables split across chunks during RAG, `docling_chunk()` can
+  repeat the header row -- see `vignette("rag")`.

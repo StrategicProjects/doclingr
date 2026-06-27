@@ -38,7 +38,7 @@ can be saved later with \code{\link[=docling_figures]{docling_figures()}}. Defau
 faster results). Required if you want image files out.}
 
 \item{images_scale}{Image resolution scale relative to 72 DPI when \code{images}
-is \code{TRUE} (for example \code{2} ≈ 144 DPI). Defaults to \code{1}.}
+is \code{TRUE} (for example \code{2} is approx. 144 DPI). Defaults to \code{1}.}
 
 \item{...}{Reserved for future pipeline options; currently ignored with a
 warning if supplied.}

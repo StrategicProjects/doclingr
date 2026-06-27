@@ -1,6 +1,6 @@
 Package: doclingr
 Title: Document Intelligence for R via Docling
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(
     person("Andre", "Leite", email = "leite@castlab.org", role = c("aut", "cre")),
     person("Marcos", "Wasilew", email = "marcos.wasilew@gmail.com", role = "aut"),
@@ -14,6 +14,7 @@ Description: An R interface to Docling, a document-understanding library that
     Markdown or JSON, and split documents into context-rich chunks suitable for
     retrieval-augmented generation (RAG) and embedding pipelines.
 License: MIT + file LICENSE
+Language: en-US
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.0.0

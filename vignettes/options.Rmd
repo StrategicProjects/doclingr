@@ -1,0 +1,118 @@
+---
+title: "Conversion options and performance"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Conversion options and performance}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", eval = FALSE)
+```
+
+Docling's defaults favor quality. When you process many documents, or know
+something about your inputs, a few options trade quality for speed -- or buy you
+images and higher resolution.
+
+## The Python backend
+
+doclingr wraps the Docling Python library through reticulate. Install the backend
+once into a managed environment, then restart R:
+
+```{r}
+library(doclingr)
+
+install_docling()         # creates an "r-docling" virtualenv
+# ...restart R...
+docling_available()       # TRUE
+```
+
+The deep-learning models (layout, tables, OCR) download on first conversion and
+are cached afterwards. To control where they are stored, set the Hugging Face
+cache before the first conversion:
+
+```{r}
+Sys.setenv(HF_HOME = "~/.cache/doclingr-models")
+```
+
+## OCR
+
+OCR reads text from scanned pages and images. It is on by default. For
+born-digital PDFs (exported from Word, LaTeX, etc.) the text layer is already
+present, so turning OCR off is a large, safe speed-up:
+
+```{r}
+doc <- docling_convert("born-digital.pdf", ocr = FALSE)
+```
+
+Leave OCR on for scans, photographs of documents, or anything where text is
+"painted" into an image.
+
+## Table structure: accurate vs. fast
+
+```{r}
+# Best structure (default) -- complex, spanning, nested tables
+docling_convert("report.pdf", table_mode = "accurate")
+
+# Quicker -- clean grids, large batches
+docling_convert("report.pdf", table_mode = "fast")
+```
+
+## Hardware acceleration
+
+Pick the device the models run on, and optionally the CPU thread count:
+
+```{r}
+docling_convert("report.pdf", device = "mps")               # Apple Silicon
+docling_convert("report.pdf", device = "cuda")              # NVIDIA GPU
+docling_convert("report.pdf", device = "cpu", num_threads = 8)
+```
+
+`device = "auto"` (the default) lets Docling choose.
+
+## Images and figures
+
+By default images are not retained, which keeps results small. Ask for them when
+you want to save figures or work with page images:
+
+```{r}
+doc  <- docling_convert("paper.pdf", images = TRUE, images_scale = 2)
+figs <- docling_figures(doc, image_dir = "figures")
+figs
+```
+
+`images_scale = 2` renders at roughly twice 72 DPI; raise it for crisper figure
+exports at the cost of memory.
+
+## Batch conversion
+
+Pass a vector of sources to convert them in one batch; the result is a named
+list of documents:
+
+```{r}
+docs <- docling_convert(
+  c("a.pdf", "b.docx", "c.html"),
+  ocr        = FALSE,
+  table_mode = "fast"
+)
+
+length(docs)
+docs[["a.pdf"]]
+```
+
+## A pragmatic recipe
+
+For a large pile of born-digital reports where you mostly care about text and
+tables:
+
+```{r}
+docs <- docling_convert(
+  list.files("reports", pattern = "[.]pdf$", full.names = TRUE),
+  ocr        = FALSE,      # no scans
+  table_mode = "fast",     # clean grids
+  device     = "auto"
+)
+```
+
+Then chunk and embed as shown in `vignette("rag")`.

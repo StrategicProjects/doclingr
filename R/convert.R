@@ -25,7 +25,7 @@
 #'   can be saved later with [docling_figures()]. Defaults to `FALSE` (smaller,
 #'   faster results). Required if you want image files out.
 #' @param images_scale Image resolution scale relative to 72 DPI when `images`
-#'   is `TRUE` (for example `2` ≈ 144 DPI). Defaults to `1`.
+#'   is `TRUE` (for example `2` is approx. 144 DPI). Defaults to `1`.
 #' @param ... Reserved for future pipeline options; currently ignored with a
 #'   warning if supplied.
 #'

@@ -98,4 +98,4 @@ issues welcome at <https://github.com/StrategicProjects/doclingr>.
 
 ## License
 
-MIT © André Leite
+MIT © doclingr authors

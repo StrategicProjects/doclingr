@@ -1,7 +1,6 @@
-# doclingr 0.0.0.9000 (development)
+# doclingr 0.1.0
 
-First development version: an R interface to Docling for document intelligence
-and RAG.
+First release: an R interface to Docling for document intelligence and RAG.
 
 * `docling_convert()` converts a file path or URL (or a vector of them) into a
   `docling_document`, with pipeline options for OCR, table mode, accelerator
