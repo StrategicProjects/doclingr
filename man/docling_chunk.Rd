@@ -7,6 +7,7 @@
 docling_chunk(
   x,
   chunker = c("hybrid", "hierarchical"),
+  tokenizer = NULL,
   max_tokens = NULL,
   contextualize = TRUE,
   ...
@@ -17,8 +18,12 @@ docling_chunk(
 
 \item{chunker}{Either \code{"hybrid"} (default) or \code{"hierarchical"}.}
 
+\item{tokenizer}{Hugging Face model id whose tokenizer is used to count
+tokens (hybrid chunker only). Defaults to a small sentence-embedding
+tokenizer when \code{max_tokens} is set; \code{NULL} uses Docling's built-in default.}
+
 \item{max_tokens}{Optional integer token budget per chunk (hybrid chunker
-only). When \code{NULL}, Docling's default for the tokenizer is used.}
+only). When \code{NULL}, the tokenizer's own maximum is used.}
 
 \item{contextualize}{When \code{TRUE} (default), each chunk's \code{text} is enriched
 with surrounding headings and table context via the chunker's
@@ -26,7 +31,7 @@ with surrounding headings and table context via the chunker's
 always also returned in \code{raw_text}.}
 
 \item{...}{Additional keyword arguments forwarded to the Python chunker
-constructor.}
+constructor (for example \code{merge_peers} or \code{repeat_table_header}).}
 }
 \value{
 A \link[tibble:tibble]{tibble::tibble} with one row per chunk and columns:
@@ -36,6 +41,8 @@ A \link[tibble:tibble]{tibble::tibble} with one row per chunk and columns:
 \item \code{raw_text} — the chunk's unmodified text.
 \item \code{n_chars} — number of characters in \code{text}.
 \item \code{headings} — list-column of heading paths for the chunk.
+\item \code{pages} — list-column of integer page numbers the chunk spans.
+\item \code{n_doc_items} — number of underlying document items in the chunk.
 }
 }
 \description{
@@ -45,13 +52,22 @@ context-enriched chunks well suited to embedding and retrieval pipelines; the
 \code{"hierarchical"} chunker follows the document's structural hierarchy without
 a token budget.
 }
+\details{
+The hybrid chunker is token-aware: it packs content up to a token budget and
+splits oversized passages. Control this with \code{tokenizer} (the model whose
+tokenizer defines "a token") and \code{max_tokens} (the budget). These are ignored
+by the hierarchical chunker.
+}
 \examples{
 \dontrun{
 doc <- docling_convert("paper.pdf")
 chunks <- docling_chunk(doc, max_tokens = 512)
 chunks$text[1]
+
+# Match your embedding model's tokenizer
+docling_chunk(doc, tokenizer = "BAAI/bge-small-en-v1.5", max_tokens = 512)
 }
 }
 \seealso{
-\code{\link[=docling_convert]{docling_convert()}}
+\code{\link[=docling_convert]{docling_convert()}}, \code{\link[=docling_embed]{docling_embed()}}
 }

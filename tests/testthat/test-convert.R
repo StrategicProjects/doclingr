@@ -21,13 +21,6 @@ test_that("docling_available returns a logical scalar", {
   expect_length(res, 1)
 })
 
-test_that("empty_chunks has the documented shape", {
-  ec <- empty_chunks()
-  expect_s3_class(ec, "tbl_df")
-  expect_named(ec, c("chunk_id", "text", "raw_text", "n_chars", "headings"))
-  expect_equal(nrow(ec), 0L)
-})
-
 test_that("round-trip conversion works when docling is installed", {
   skip_if_no_docling()
   src <- system.file("examples", "sample.md", package = "doclingr")

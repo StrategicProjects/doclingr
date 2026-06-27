@@ -48,6 +48,26 @@ tables[[1]]
 # RAG-ready chunks -> tibble
 chunks <- docling_chunk(doc, max_tokens = 512)
 chunks$text[1]
+
+# Match your embedding model's tokenizer for accurate budgets
+chunks <- docling_chunk(doc, tokenizer = "BAAI/bge-small-en-v1.5", max_tokens = 512)
+```
+
+### From chunks to embeddings
+
+doclingr stays provider-agnostic: bring any embedding function (an API call, a
+local model via reticulate, ...) and `docling_embed()` handles batching and tidy
+assembly into an `embedding` list-column.
+
+```r
+embed_openai <- function(txt) {
+  # your call to an embeddings API -> matrix (one row per text)
+}
+
+doc |>
+  docling_chunk(max_tokens = 512) |>
+  docling_embed(embed_openai, batch_size = 64)
+#> # adds `embedding` (list-column) and `n_dim` columns
 ```
 
 ## Why Docling, why reticulate?

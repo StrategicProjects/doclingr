@@ -6,17 +6,16 @@
   reticulate::configure_environment(pkgname)
 }
 
-#' Access a Docling Python submodule
+#' Import (and cache) a Python module, asserting the Docling backend exists
 #'
-#' Imports (and caches) a Docling submodule on first use. All Python access in
-#' the package flows through this helper so that import failures surface a single
-#' actionable error pointing users at [install_docling()].
+#' All Python access in the package flows through this helper so that a missing
+#' backend surfaces a single actionable error pointing at [install_docling()].
 #'
-#' @param module Name of the submodule, e.g. `"document_converter"`.
-#' @return The imported Python module.
+#' @param full Fully-qualified module name, e.g. `"docling.document_converter"`
+#'   or `"docling_core.transforms.chunker.tokenizer.huggingface"`.
+#' @return The imported Python module (cached after first import).
 #' @noRd
-py_docling <- function(module = NULL) {
-  full <- if (is.null(module)) "docling" else paste0("docling.", module)
+py_import <- function(full) {
   cached <- .doclingr[[full]]
   if (!is.null(cached)) {
     return(cached)
@@ -36,4 +35,17 @@ py_docling <- function(module = NULL) {
   mod <- reticulate::import(full, delay_load = FALSE)
   assign(full, mod, envir = .doclingr)
   mod
+}
+
+#' Access a Docling Python submodule
+#'
+#' Thin wrapper over `py_import()` for the `docling.*` namespace.
+#'
+#' @param module Name of the submodule, e.g. `"document_converter"`, or `NULL`
+#'   for the top-level `docling` package.
+#' @return The imported Python module.
+#' @noRd
+py_docling <- function(module = NULL) {
+  full <- if (is.null(module)) "docling" else paste0("docling.", module)
+  py_import(full)
 }
