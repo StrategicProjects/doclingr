@@ -13,7 +13,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.0.0
-URL: https://github.com/StrategicProjects/doclingr
+URL: https://github.com/StrategicProjects/doclingr,
+    https://strategicprojects.github.io/doclingr/
 BugReports: https://github.com/StrategicProjects/doclingr/issues
 SystemRequirements: Python (>= 3.9), docling (>= 2.20.0; tested with 2.107.0)
 Imports:

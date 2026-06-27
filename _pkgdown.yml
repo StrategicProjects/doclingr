@@ -1,0 +1,30 @@
+url: https://strategicprojects.github.io/doclingr/
+
+template:
+  bootstrap: 5
+
+reference:
+- title: Setup
+  desc: Install and check the Docling Python backend.
+  contents:
+  - install_docling
+  - docling_available
+- title: Convert
+  desc: Turn documents into structured handles.
+  contents:
+  - docling_convert
+  - docling_n_pages
+- title: Export
+  desc: Render a converted document into downstream formats.
+  contents:
+  - docling_export
+- title: Extract
+  desc: Mine tables and figures.
+  contents:
+  - docling_tables
+  - docling_figures
+- title: RAG pipeline
+  desc: Chunk documents and attach embeddings.
+  contents:
+  - docling_chunk
+  - docling_embed

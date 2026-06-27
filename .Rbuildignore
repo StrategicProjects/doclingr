@@ -11,3 +11,8 @@
 ^\.claude$
 ^\.vscode$
 ^\.DS_Store$
+^_pkgdown\.yml$
+^pkgdown$
+^docs$
+^cran-comments\.md$
+^\.github/.*\.ya?ml$
