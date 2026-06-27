@@ -1,0 +1,25 @@
+# === R ===
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+.Rapp.history
+inst/doc
+/doc/
+/Meta/
+docs/
+..Rcheck/
+*.tar.gz
+
+# === OS / editors ===
+.DS_Store
+*~
+.vscode/
+
+# === Private working files (NOT part of the package) ===
+CLAUDE.md
+plan.md
+memory.md
+.memory/
+.claude/

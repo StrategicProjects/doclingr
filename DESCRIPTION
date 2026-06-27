@@ -1,0 +1,29 @@
+Package: doclingr
+Title: Document Intelligence for R via Docling
+Version: 0.0.0.9000
+Authors@R:
+    person("André", "Leite", , "leite@de.ufpe.br", role = c("aut", "cre"))
+Description: An R interface to Docling, a document-understanding library that
+    converts PDF, DOCX, PPTX, HTML and image documents into structured,
+    AI-ready data. doclingr wraps the Docling Python package through
+    'reticulate' to extract layout-aware text, tables and metadata, export to
+    Markdown or JSON, and split documents into context-rich chunks suitable for
+    retrieval-augmented generation (RAG) and embedding pipelines.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 8.0.0
+URL: https://github.com/StrategicProjects/doclingr
+BugReports: https://github.com/StrategicProjects/doclingr/issues
+SystemRequirements: Python (>= 3.9), docling
+Imports:
+    reticulate (>= 1.34.0),
+    cli,
+    rlang,
+    tibble
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+Config/testthat/edition: 3
+VignetteBuilder: knitr
