@@ -2,24 +2,48 @@
 % Please edit documentation in R/convert.R
 \name{docling_convert}
 \alias{docling_convert}
-\title{Convert a document with Docling}
+\title{Convert one or more documents with Docling}
 \usage{
-docling_convert(source, ...)
+docling_convert(
+  source,
+  ocr = TRUE,
+  table_mode = c("accurate", "fast"),
+  device = c("auto", "cpu", "cuda", "mps"),
+  num_threads = NULL,
+  ...
+)
 }
 \arguments{
-\item{source}{A single file path or URL to convert.}
+\item{source}{A character vector of file paths and/or URLs. A single source
+returns one \code{docling_document}; multiple sources are converted in one batch
+and returned as a \code{docling_document_list}.}
+
+\item{ocr}{Logical; run OCR on the document. Defaults to \code{TRUE}. Set to
+\code{FALSE} to skip OCR for faster conversion of born-digital documents.}
+
+\item{table_mode}{Table-structure model mode, one of \code{"fast"} or
+\code{"accurate"} (default). \code{"accurate"} produces better table structure at
+some speed cost.}
+
+\item{device}{Accelerator device for the deep-learning models: \code{"auto"}
+(default), \code{"cpu"}, \code{"cuda"}, or \code{"mps"}.}
+
+\item{num_threads}{Optional integer number of CPU threads for the
+accelerator. \code{NULL} (default) leaves Docling's default.}
 
 \item{...}{Reserved for future pipeline options; currently ignored with a
 warning if supplied.}
 }
 \value{
-An object of class \code{docling_document}: a list with the underlying
-Python \code{document} and the original \code{source}.
+For a single \code{source}, an object of class \code{docling_document} (a list
+with the underlying Python \code{document} and the original \code{source}). For
+multiple sources, a \code{docling_document_list}: a list of \code{docling_document}
+objects named by source.
 }
 \description{
-Runs Docling's document-understanding pipeline over a local file path or URL
-and returns a lightweight R handle around the resulting \code{DoclingDocument}.
-The handle can be exported to Markdown or JSON (\code{\link[=as_markdown]{as_markdown()}},
+Runs Docling's document-understanding pipeline over local file paths or URLs
+and returns lightweight R handles around the resulting \code{DoclingDocument}s.
+Each handle can be exported to Markdown or JSON (\code{\link[=as_markdown]{as_markdown()}},
 \code{\link[=as_json]{as_json()}}), mined for tables (\code{\link[=docling_tables]{docling_tables()}}), or split into chunks
 for RAG (\code{\link[=docling_chunk]{docling_chunk()}}).
 }
@@ -31,6 +55,9 @@ common image formats, as determined by the installed Docling version.
 \dontrun{
 doc <- docling_convert("https://arxiv.org/pdf/2408.09869")
 as_markdown(doc)
+
+# Batch, OCR off, fast tables
+docs <- docling_convert(c("a.pdf", "b.pdf"), ocr = FALSE, table_mode = "fast")
 }
 }
 \seealso{

@@ -23,3 +23,7 @@ plan.md
 memory.md
 .memory/
 .claude/
+
+# testthat run artifacts
+tests/testthat/_problems/
+tests/testthat/*-problems.rds
