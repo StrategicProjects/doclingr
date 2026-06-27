@@ -14,7 +14,9 @@ Checks whether the \code{docling} Python package can be imported in the active
 'reticulate' environment.
 }
 \examples{
+\dontrun{
 docling_available()
+}
 }
 \seealso{
 \code{\link[=install_docling]{install_docling()}}

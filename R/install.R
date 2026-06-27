@@ -50,7 +50,9 @@ install_docling <- function(envname = "r-docling",
 #' @seealso [install_docling()]
 #' @export
 #' @examples
+#' \dontrun{
 #' docling_available()
+#' }
 docling_available <- function() {
   reticulate::py_module_available("docling")
 }
