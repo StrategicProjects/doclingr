@@ -21,6 +21,11 @@
 #'   (default), `"cpu"`, `"cuda"`, or `"mps"`.
 #' @param num_threads Optional integer number of CPU threads for the
 #'   accelerator. `NULL` (default) leaves Docling's default.
+#' @param images Logical; generate and retain page and picture images so they
+#'   can be saved later with [docling_figures()]. Defaults to `FALSE` (smaller,
+#'   faster results). Required if you want image files out.
+#' @param images_scale Image resolution scale relative to 72 DPI when `images`
+#'   is `TRUE` (for example `2` ≈ 144 DPI). Defaults to `1`.
 #' @param ... Reserved for future pipeline options; currently ignored with a
 #'   warning if supplied.
 #'
@@ -43,6 +48,8 @@ docling_convert <- function(source,
                             table_mode = c("accurate", "fast"),
                             device = c("auto", "cpu", "cuda", "mps"),
                             num_threads = NULL,
+                            images = FALSE,
+                            images_scale = 1,
                             ...) {
   if (!is.character(source) || length(source) == 0 || anyNA(source)) {
     cli::cli_abort("{.arg source} must be a non-empty character vector of paths or URLs.")
@@ -57,7 +64,9 @@ docling_convert <- function(source,
     ocr = ocr,
     table_mode = table_mode,
     device = device,
-    num_threads = num_threads
+    num_threads = num_threads,
+    images = images,
+    images_scale = images_scale
   )
 
   if (length(source) == 1) {
@@ -74,8 +83,10 @@ docling_convert <- function(source,
 # Build a DocumentConverter, applying PDF pipeline options only when they
 # diverge from Docling's defaults. Option module paths have shifted across
 # Docling versions, so construction is guarded with an actionable error.
-build_converter <- function(ocr, table_mode, device, num_threads) {
-  defaults <- ocr && table_mode == "accurate" && device == "auto" && is.null(num_threads)
+build_converter <- function(ocr, table_mode, device, num_threads,
+                            images = FALSE, images_scale = 1) {
+  defaults <- ocr && table_mode == "accurate" && device == "auto" &&
+    is.null(num_threads) && !images
   dc <- py_docling("document_converter")
   if (defaults) {
     return(dc$DocumentConverter())
@@ -93,6 +104,11 @@ build_converter <- function(ocr, table_mode, device, num_threads) {
         accurate = popts$TableFormerMode$ACCURATE,
         fast = popts$TableFormerMode$FAST
       )
+      if (images) {
+        pipeline_options$generate_picture_images <- TRUE
+        pipeline_options$generate_page_images <- TRUE
+        pipeline_options$images_scale <- as.numeric(images_scale)
+      }
 
       acc_args <- list(device = popts$AcceleratorDevice[[toupper(device)]])
       if (!is.null(num_threads)) {
@@ -128,11 +144,33 @@ new_docling_document <- function(document, source) {
 print.docling_document <- function(x, ...) {
   cli::cli_text("{.cls docling_document}")
   cli::cli_text("{.field source}: {.val {x$source}}")
+  n_pages <- tryCatch(as.integer(x$document$num_pages()), error = function(e) NA_integer_)
+  if (!is.na(n_pages)) {
+    cli::cli_text("{.field pages}: {n_pages}")
+  }
   n_tables <- tryCatch(length(x$document$tables), error = function(e) NA_integer_)
   if (!is.na(n_tables)) {
     cli::cli_text("{.field tables}: {n_tables}")
   }
+  n_pics <- tryCatch(length(x$document$pictures), error = function(e) NA_integer_)
+  if (!is.na(n_pics)) {
+    cli::cli_text("{.field figures}: {n_pics}")
+  }
   invisible(x)
+}
+
+#' Number of pages in a converted document
+#'
+#' @param x A `docling_document` from [docling_convert()].
+#' @return An integer page count (`0` for page-less formats such as Markdown).
+#' @export
+#' @examples
+#' \dontrun{
+#' docling_n_pages(docling_convert("report.pdf"))
+#' }
+docling_n_pages <- function(x) {
+  check_docling_document(x)
+  as.integer(x$document$num_pages())
 }
 
 #' @export

@@ -10,6 +10,8 @@ docling_convert(
   table_mode = c("accurate", "fast"),
   device = c("auto", "cpu", "cuda", "mps"),
   num_threads = NULL,
+  images = FALSE,
+  images_scale = 1,
   ...
 )
 }
@@ -30,6 +32,13 @@ some speed cost.}
 
 \item{num_threads}{Optional integer number of CPU threads for the
 accelerator. \code{NULL} (default) leaves Docling's default.}
+
+\item{images}{Logical; generate and retain page and picture images so they
+can be saved later with \code{\link[=docling_figures]{docling_figures()}}. Defaults to \code{FALSE} (smaller,
+faster results). Required if you want image files out.}
+
+\item{images_scale}{Image resolution scale relative to 72 DPI when \code{images}
+is \code{TRUE} (for example \code{2} ≈ 144 DPI). Defaults to \code{1}.}
 
 \item{...}{Reserved for future pipeline options; currently ignored with a
 warning if supplied.}

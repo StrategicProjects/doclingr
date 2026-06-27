@@ -41,9 +41,14 @@ doc <- docling_convert("https://arxiv.org/pdf/2408.09869")
 as_markdown(doc)       # layout-aware Markdown
 as_json(doc)           # structured DoclingDocument as an R list
 
-# Tables -> list of tibbles
-tables <- docling_tables(doc)
+# Pages and tables
+docling_n_pages(doc)
+tables <- docling_tables(doc)   # list of tibbles
 tables[[1]]
+
+# Figures -> tibble (captions, pages, optional saved images)
+doc <- docling_convert("paper.pdf", images = TRUE)
+docling_figures(doc, image_dir = "figures")
 
 # RAG-ready chunks -> tibble
 chunks <- docling_chunk(doc, max_tokens = 512)
