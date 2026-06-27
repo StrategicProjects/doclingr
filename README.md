@@ -3,7 +3,14 @@
 > Document intelligence for R — turn messy PDFs, Office files and HTML into
 > AI-ready, structured data.
 
-![status: experimental](https://img.shields.io/badge/status-experimental-orange)
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/StrategicProjects/doclingr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/StrategicProjects/doclingr/actions/workflows/R-CMD-check.yaml)
+[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Backend: Python via reticulate](https://img.shields.io/badge/backend-Python%20via%20reticulate-3B82F6.svg)](https://rstudio.github.io/reticulate/)
+[![Docs](https://img.shields.io/badge/docs-pkgdown-1FB6A6.svg)](https://strategicprojects.github.io/doclingr/)
+[![Powered by Docling](https://img.shields.io/badge/powered%20by-Docling-0B2239.svg)](https://github.com/docling-project/docling)
+<!-- badges: end -->
 
 **doclingr** is an R interface to [Docling](https://github.com/docling-project/docling),
 an open-source document-understanding library. It brings layout-aware PDF/DOCX/PPTX/HTML
@@ -93,8 +100,9 @@ upstream parity for free; doclingr focuses on an idiomatic, tidy R surface.
 
 ## Status
 
-Experimental and under active development. API may change. Contributions and
-issues welcome at <https://github.com/StrategicProjects/doclingr>.
+Actively developed and heading to CRAN. The public API is settling but may still
+change before 1.0. Contributions and issues are welcome at
+<https://github.com/StrategicProjects/doclingr>.
 
 ## License
 
