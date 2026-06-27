@@ -64,7 +64,7 @@ docling_convert(
 - images_scale:
 
   Image resolution scale relative to 72 DPI when `images` is `TRUE` (for
-  example `2` ≈ 144 DPI). Defaults to `1`.
+  example `2` is approx. 144 DPI). Defaults to `1`.
 
 - ...:
 

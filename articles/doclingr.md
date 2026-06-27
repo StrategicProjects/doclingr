@@ -158,7 +158,7 @@ corpus
 
 At this point `corpus` is a tidy table of chunks with their headings,
 pages and embeddings — ready to write to a vector store, a database, or
-an in-memory nearest-neighbour index for RAG.
+an in-memory nearest-neighbor index for RAG.
 
 ## Where to go next
 
