@@ -3,11 +3,6 @@
 > Document intelligence for R — turn messy PDFs, Office files and HTML
 > into AI-ready, structured data.
 
-![status:
-experimental](https://img.shields.io/badge/status-experimental-orange)
-
-status: experimental
-
 **doclingr** is an R interface to
 [Docling](https://github.com/docling-project/docling), an open-source
 document-understanding library. It brings layout-aware
@@ -104,8 +99,9 @@ on an idiomatic, tidy R surface.
 
 ## Status
 
-Experimental and under active development. API may change. Contributions
-and issues welcome at <https://github.com/StrategicProjects/doclingr>.
+Actively developed and heading to CRAN. The public API is settling but
+may still change before 1.0. Contributions and issues are welcome at
+<https://github.com/StrategicProjects/doclingr>.
 
 ## License
 
