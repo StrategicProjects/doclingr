@@ -1,4 +1,4 @@
 # License
 
     YEAR: 2026
-    COPYRIGHT HOLDER: André Leite
+    COPYRIGHT HOLDER: doclingr authors

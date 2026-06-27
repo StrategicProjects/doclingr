@@ -14,12 +14,22 @@ Useful links:
 
 - <https://github.com/StrategicProjects/doclingr>
 
+- <https://strategicprojects.github.io/doclingr/>
+
 - Report bugs at <https://github.com/StrategicProjects/doclingr/issues>
 
 ## Author
 
-**Maintainer**: André Leite <leite@de.ufpe.br>
+**Maintainer**: Andre Leite <leite@castlab.org>
 
 Authors:
 
-- André Leite <leite@de.ufpe.br>
+- Andre Leite <leite@castlab.org>
+
+- Marcos Wasilew <marcos.wasilew@gmail.com>
+
+- Hugo Vasconcelos <hugo.vasconcelos@ufpe.br>
+
+- Carlos Amorin <carlos.agaf@ufpe.br>
+
+- Diogo Bezerra <diogo.bezerra@ufpe.br>
