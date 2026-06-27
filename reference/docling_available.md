@@ -20,8 +20,7 @@ A logical scalar.
 ## Examples
 
 ``` r
+if (FALSE) { # \dontrun{
 docling_available()
-#> Downloading uv...
-#> Done!
-#> [1] FALSE
+} # }
 ```

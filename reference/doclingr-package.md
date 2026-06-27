@@ -1,12 +1,12 @@
-# doclingr: Document Intelligence for R via Docling
+# doclingr: Document Intelligence for R via 'Docling'
 
-An R interface to Docling, a document-understanding library that
-converts PDF, DOCX, PPTX, HTML and image documents into structured,
-AI-ready data. doclingr wraps the Docling Python package through
-'reticulate' to extract layout-aware text, tables and metadata, export
-to Markdown or JSON, and split documents into context-rich chunks
-suitable for retrieval-augmented generation (RAG) and embedding
-pipelines.
+An R interface to 'Docling', a document-understanding library that
+converts 'PDF', 'DOCX', 'PPTX', 'HTML' and image documents into
+structured, AI-ready data. The package wraps the 'Docling' 'Python'
+package through 'reticulate' to extract layout-aware text, tables and
+metadata, export to 'Markdown' or 'JSON', and split documents into
+context-rich chunks suitable for retrieval-augmented generation (RAG)
+and embedding pipelines.
 
 ## See also
 
