@@ -1,6 +1,16 @@
 ## Resubmission
 
-This is a resubmission. In response to Konstanze Lauseker's review, I have:
+This is a resubmission. The incoming pre-test on Debian noted:
+
+    Running R code in 'testthat.R' had CPU time 2.9 times elapsed time
+
+This came from 'reticulate' initialising Python (and its numpy/OpenBLAS
+stack, which starts one thread per core) during the tests. The test runner
+now caps all threading environment variables (OMP_NUM_THREADS,
+OPENBLAS_NUM_THREADS, etc.) before Python is touched, so the tests stay
+within CRAN's 2-core limit.
+
+Changes from the earlier review round (Konstanze Lauseker) are retained:
 
 * Removed the redundant "for R" / "R" wording from the Title and Description.
 * Removed the `install_docling()` example from `install_docling.Rd` so no
