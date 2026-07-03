@@ -17,10 +17,6 @@
 #' @return Invisibly `NULL`, called for its side effect.
 #' @seealso [docling_available()], [docling_convert()]
 #' @export
-#' @examples
-#' \dontrun{
-#' install_docling()
-#' }
 install_docling <- function(envname = "r-docling",
                             method = c("auto", "virtualenv", "conda"),
                             extra = NULL,

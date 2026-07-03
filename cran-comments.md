@@ -1,3 +1,14 @@
+## Resubmission
+
+This is a resubmission. In response to Konstanze Lauseker's review, I have:
+
+* Removed the redundant "for R" / "R" wording from the Title and Description.
+* Removed the `install_docling()` example from `install_docling.Rd` so no
+  example installs software. (The function itself is a thin, opt-in wrapper
+  around `reticulate::py_install()` that only runs when the user calls it; no
+  functions, examples, or vignettes install anything during check — vignettes
+  are not evaluated.)
+
 ## R CMD check results
 
 0 errors | 0 warnings | 1 note

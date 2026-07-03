@@ -33,11 +33,6 @@ Installs the \code{docling} Python package (and its dependencies) into a
 \code{\link[reticulate:py_install]{reticulate::py_install()}} that you typically run once after installing
 doclingr.
 }
-\examples{
-\dontrun{
-install_docling()
-}
-}
 \seealso{
 \code{\link[=docling_available]{docling_available()}}, \code{\link[=docling_convert]{docling_convert()}}
 }

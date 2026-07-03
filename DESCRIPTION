@@ -1,5 +1,5 @@
 Package: doclingr
-Title: Document Intelligence for R via 'Docling'
+Title: Document Intelligence via 'Docling'
 Version: 0.1.0
 Authors@R: c(
     person("Andre", "Leite", email = "leite@castlab.org", role = c("aut", "cre")),
@@ -7,7 +7,7 @@ Authors@R: c(
     person("Hugo", "Vasconcelos", email = "hugo.vasconcelos@ufpe.br", role = "aut"),
     person("Carlos", "Amorim", email = "carlos.agaf@ufpe.br", role = "aut"),
     person("Diogo", "Bezerra", email = "diogo.bezerra@ufpe.br", role = "aut"))
-Description: An R interface to 'Docling', a document-understanding library that
+Description: An interface to 'Docling', a document-understanding library that
     converts 'PDF', 'DOCX', 'PPTX', 'HTML' and image documents into structured,
     AI-ready data. The package wraps the 'Docling' 'Python' package through
     'reticulate' to extract layout-aware text, tables and metadata, export to
