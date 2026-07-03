@@ -48,11 +48,3 @@ Invisibly `NULL`, called for its side effect.
 
 [`docling_available()`](https://strategicprojects.github.io/doclingr/reference/docling_available.md),
 [`docling_convert()`](https://strategicprojects.github.io/doclingr/reference/docling_convert.md)
-
-## Examples
-
-``` r
-if (FALSE) { # \dontrun{
-install_docling()
-} # }
-```
