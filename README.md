@@ -4,6 +4,7 @@
 > AI-ready, structured data.
 
 <!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/doclingr)](https://CRAN.R-project.org/package=doclingr)
 [![R-CMD-check](https://github.com/StrategicProjects/doclingr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/StrategicProjects/doclingr/actions/workflows/R-CMD-check.yaml)
 [![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -29,6 +30,14 @@ structure, chunk it, and hand it back ready for search and embeddings.
 </p>
 
 ## Installation
+
+Install the released version from CRAN:
+
+```r
+install.packages("doclingr")
+```
+
+Or the development version from GitHub:
 
 ```r
 # install.packages("pak")
