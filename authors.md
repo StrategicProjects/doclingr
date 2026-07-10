@@ -15,7 +15,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/StrategicProjects/doclingr/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/StrategicProjects/doclingr/blob/v0.1.0/DESCRIPTION)
 
 Leite A, Wasilew M, Vasconcelos H, Amorim C, Bezerra D (2026).
 *doclingr: Document Intelligence via 'Docling'*. R package version
