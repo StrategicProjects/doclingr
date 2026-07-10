@@ -23,6 +23,15 @@ embed” /\> \</p\> \</div\> \<div id=](reference/figures/workflow.svg)
 
 ## Installation
 
+Install the released version from CRAN:
+
+``` r
+
+install.packages("doclingr")
+```
+
+Or the development version from GitHub:
+
 ``` r
 
 # install.packages("pak")

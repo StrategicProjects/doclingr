@@ -1,12 +1,12 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   doclingr: doclingr.html
   options: options.html
   rag: rag.html
   tables: tables.html
-last_built: 2026-07-03T14:50Z
+last_built: 2026-07-10T20:36Z
 urls:
   reference: https://strategicprojects.github.io/doclingr/reference
   article: https://strategicprojects.github.io/doclingr/articles
