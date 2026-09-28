@@ -2,6 +2,8 @@
 
 ## doclingr 0.1.0
 
+CRAN release: 2026-07-10
+
 First release: an R interface to Docling for document intelligence and
 RAG.
 
