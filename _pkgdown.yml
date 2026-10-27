@@ -24,7 +24,8 @@ reference:
   - docling_tables
   - docling_figures
 - title: RAG pipeline
-  desc: Chunk documents and attach embeddings.
+  desc: Chunk documents, attach embeddings, persist for indexing.
   contents:
   - docling_chunk
   - docling_embed
+  - docling_write_chunks

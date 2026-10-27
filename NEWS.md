@@ -1,3 +1,18 @@
+# doclingr 0.1.1
+
+* `docling_chunk()` gains a `doc_items` list-column with per-item provenance:
+  `self_ref`, `label`, `page` and a 1-based inclusive character span
+  (`char_start`/`char_end`) locating each occurrence within the originating
+  item's text (populated by layout analysis; `NA` for formats without
+  provenance, such as Markdown sources).
+* New `docling_write_chunks()` persists chunk tibbles — including `embedding`
+  and other list-columns — to Parquet or Feather via the arrow package (new
+  optional dependency in Suggests), for hand-off to Python, DuckDB and other
+  Arrow-aware RAG tooling.
+* `vignette("options")` gains a "Model cache and offline use" section covering
+  `HF_HOME` and `HF_HUB_OFFLINE` for air-gapped machines.
+* Confirmed compatible with Docling 2.143.1 (full test suite).
+
 # doclingr 0.1.0
 
 First release: an R interface to Docling for document intelligence and RAG.

@@ -37,6 +37,12 @@ default_chunk_tokenizer <- "sentence-transformers/all-MiniLM-L6-v2"
 #'   * `headings` — list-column of heading paths for the chunk.
 #'   * `pages` — list-column of integer page numbers the chunk spans.
 #'   * `n_doc_items` — number of underlying document items in the chunk.
+#'   * `doc_items` — list-column of provenance tibbles, one row per document
+#'     item occurrence, with columns `self_ref`, `label`, `page`, `char_start`
+#'     and `char_end`. The character span locates the occurrence within the
+#'     originating item's text, 1-based and inclusive (ready for
+#'     [substr()]). Spans and pages come from layout analysis, so they are
+#'     `NA` for formats without provenance (e.g. 'Markdown' sources).
 #' @seealso [docling_convert()], [docling_embed()]
 #' @export
 #' @examples
@@ -92,7 +98,8 @@ docling_chunk <- function(x,
     n_chars = nchar(text),
     headings = lapply(chunks, chunk_headings),
     pages = lapply(chunks, chunk_pages),
-    n_doc_items = vapply(chunks, chunk_n_doc_items, integer(1))
+    n_doc_items = vapply(chunks, chunk_n_doc_items, integer(1)),
+    doc_items = lapply(chunks, chunk_doc_items)
   )
 }
 
@@ -135,6 +142,64 @@ chunk_n_doc_items <- function(ch) {
   if (is.null(items)) 0L else length(items)
 }
 
+# One provenance tibble per chunk: a row per (doc item, provenance) pair.
+# Docling charspans are 0-based half-open; convert to 1-based inclusive so
+# substr(item_text, char_start, char_end) recovers the occurrence.
+chunk_doc_items <- function(ch) {
+  items <- tryCatch(ch$meta$doc_items, error = function(e) NULL)
+  if (is.null(items) || length(items) == 0) {
+    return(empty_doc_items())
+  }
+  rows <- lapply(items, function(it) {
+    self_ref <- py_chr(it$self_ref)
+    label <- py_chr(it$label)
+    prov <- tryCatch(it$prov, error = function(e) NULL)
+    if (is.null(prov) || length(prov) == 0) {
+      return(tibble::tibble(
+        self_ref = self_ref, label = label, page = NA_integer_,
+        char_start = NA_integer_, char_end = NA_integer_
+      ))
+    }
+    spans <- lapply(prov, function(p) {
+      tryCatch(as.integer(unlist(p$charspan))[1:2],
+               error = function(e) c(NA_integer_, NA_integer_))
+    })
+    tibble::tibble(
+      self_ref = self_ref,
+      label = label,
+      page = vapply(prov, function(p) {
+        tryCatch(as.integer(p$page_no), error = function(e) NA_integer_)
+      }, integer(1)),
+      char_start = vapply(spans, function(s) s[1] + 1L, integer(1)),
+      char_end = vapply(spans, function(s) s[2], integer(1))
+    )
+  })
+  do.call(rbind, rows)
+}
+
+# Coerce a (possibly Python) value to a length-1 character, NA on failure.
+# Docling labels are string enums; py_str() renders their plain value.
+py_chr <- function(x) {
+  out <- tryCatch({
+    if (inherits(x, "python.builtin.object")) {
+      reticulate::py_str(x)
+    } else {
+      as.character(x)
+    }
+  }, error = function(e) NA_character_)
+  if (length(out) != 1) NA_character_ else out
+}
+
+empty_doc_items <- function() {
+  tibble::tibble(
+    self_ref = character(0),
+    label = character(0),
+    page = integer(0),
+    char_start = integer(0),
+    char_end = integer(0)
+  )
+}
+
 empty_chunks <- function() {
   tibble::tibble(
     chunk_id = integer(0),
@@ -143,6 +208,7 @@ empty_chunks <- function() {
     n_chars = integer(0),
     headings = list(),
     pages = list(),
-    n_doc_items = integer(0)
+    n_doc_items = integer(0),
+    doc_items = list()
   )
 }

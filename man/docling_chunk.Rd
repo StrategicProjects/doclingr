@@ -43,6 +43,12 @@ A \link[tibble:tibble]{tibble::tibble} with one row per chunk and columns:
 \item \code{headings} — list-column of heading paths for the chunk.
 \item \code{pages} — list-column of integer page numbers the chunk spans.
 \item \code{n_doc_items} — number of underlying document items in the chunk.
+\item \code{doc_items} — list-column of provenance tibbles, one row per document
+item occurrence, with columns \code{self_ref}, \code{label}, \code{page}, \code{char_start}
+and \code{char_end}. The character span locates the occurrence within the
+originating item's text, 1-based and inclusive (ready for
+\code{\link[=substr]{substr()}}). Spans and pages come from layout analysis, so they are
+\code{NA} for formats without provenance (e.g. 'Markdown' sources).
 }
 }
 \description{

@@ -1,6 +1,6 @@
 Package: doclingr
 Title: Document Intelligence via 'Docling'
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("André", "Leite", email = "leite@castlab.org", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-4718-9766")),
@@ -28,14 +28,16 @@ RoxygenNote: 8.0.0
 URL: https://github.com/StrategicProjects/doclingr,
     https://strategicprojects.github.io/doclingr/
 BugReports: https://github.com/StrategicProjects/doclingr/issues
-SystemRequirements: Python (>= 3.9), docling (>= 2.20.0; tested with 2.107.0)
+SystemRequirements: Python (>= 3.9), docling (>= 2.20.0; tested with 2.143.1)
 Imports:
     reticulate (>= 1.34.0),
     cli,
     rlang,
     stats,
-    tibble
+    tibble,
+    tools
 Suggests:
+    arrow,
     testthat (>= 3.0.0),
     knitr,
     rmarkdown

@@ -2,8 +2,15 @@ test_that("empty_chunks has the documented shape", {
   ec <- empty_chunks()
   expect_s3_class(ec, "tbl_df")
   expect_named(ec, c("chunk_id", "text", "raw_text", "n_chars", "headings",
-                     "pages", "n_doc_items"))
+                     "pages", "n_doc_items", "doc_items"))
   expect_equal(nrow(ec), 0L)
+})
+
+test_that("empty_doc_items has the documented shape", {
+  ei <- empty_doc_items()
+  expect_s3_class(ei, "tbl_df")
+  expect_named(ei, c("self_ref", "label", "page", "char_start", "char_end"))
+  expect_equal(nrow(ei), 0L)
 })
 
 test_that("normalize_embeddings accepts matrices and lists", {
@@ -55,6 +62,14 @@ test_that("hybrid tokenizer control works end to end", {
   doc <- docling_convert(src)
   chunks <- docling_chunk(doc, max_tokens = 128)
   expect_s3_class(chunks, "tbl_df")
-  expect_true(all(c("pages", "n_doc_items") %in% names(chunks)))
+  expect_true(all(c("pages", "n_doc_items", "doc_items") %in% names(chunks)))
   expect_type(chunks$pages, "list")
+
+  # Provenance tibbles: one row per doc item occurrence, documented columns.
+  di <- chunks$doc_items[[1]]
+  expect_s3_class(di, "tbl_df")
+  expect_named(di, c("self_ref", "label", "page", "char_start", "char_end"))
+  expect_gte(nrow(di), chunks$n_doc_items[[1]])
+  expect_true(all(grepl("^#/", di$self_ref)))
+  expect_false(anyNA(di$label))
 })
