@@ -164,8 +164,9 @@ an in-memory nearest-neighbor index for RAG.
 
 - Use `as_json(doc)` when you need the full structural detail Docling
   captured.
-- Persist `corpus` (for example with `arrow::write_parquet()`) to avoid
-  re-converting and re-embedding.
+- Persist `corpus` (for example with
+  [`arrow::write_parquet()`](https://arrow.apache.org/docs/r/reference/write_parquet.html))
+  to avoid re-converting and re-embedding.
 - See the [Docling
   documentation](https://docling-project.github.io/docling/) for the
   breadth of supported formats and pipeline options.

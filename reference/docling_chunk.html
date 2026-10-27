@@ -15,7 +15,7 @@ a token budget."><meta property="og:image" content="https://strategicprojects.gi
 
     <a class="navbar-brand me-2" href="../index.html">doclingr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,6 +111,12 @@ constructor (for example <code>merge_peers</code> or <code>repeat_table_header</
 <li><p><code>headings</code> — list-column of heading paths for the chunk.</p></li>
 <li><p><code>pages</code> — list-column of integer page numbers the chunk spans.</p></li>
 <li><p><code>n_doc_items</code> — number of underlying document items in the chunk.</p></li>
+<li><p><code>doc_items</code> — list-column of provenance tibbles, one row per document
+item occurrence, with columns <code>self_ref</code>, <code>label</code>, <code>page</code>, <code>char_start</code>
+and <code>char_end</code>. The character span locates the occurrence within the
+originating item's text, 1-based and inclusive (ready for
+<code><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr()</a></code>). Spans and pages come from layout analysis, so they are
+<code>NA</code> for formats without provenance (e.g. 'Markdown' sources).</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

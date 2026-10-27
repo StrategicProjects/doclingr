@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">doclingr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,15 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.1.1" id="doclingr-011">doclingr 0.1.1<a class="anchor" aria-label="anchor" href="#doclingr-011"></a></h2>
+<ul><li>
+<code><a href="../reference/docling_chunk.html">docling_chunk()</a></code> gains a <code>doc_items</code> list-column with per-item provenance: <code>self_ref</code>, <code>label</code>, <code>page</code> and a 1-based inclusive character span (<code>char_start</code>/<code>char_end</code>) locating each occurrence within the originating item’s text (populated by layout analysis; <code>NA</code> for formats without provenance, such as Markdown sources).</li>
+<li>New <code><a href="../reference/docling_write_chunks.html">docling_write_chunks()</a></code> persists chunk tibbles — including <code>embedding</code> and other list-columns — to Parquet or Feather via the arrow package (new optional dependency in Suggests), for hand-off to Python, DuckDB and other Arrow-aware RAG tooling.</li>
+<li>
+<code><a href="../articles/options.html">vignette("options")</a></code> gains a “Model cache and offline use” section covering <code>HF_HOME</code> and <code>HF_HUB_OFFLINE</code> for air-gapped machines.</li>
+<li>Confirmed compatible with Docling 2.143.1 (full test suite).</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0" id="doclingr-010">doclingr 0.1.0<a class="anchor" aria-label="anchor" href="#doclingr-010"></a></h2><p class="text-muted">CRAN release: 2026-07-10</p>
 <p>First release: an R interface to Docling for document intelligence and RAG.</p>
 <ul><li>
@@ -55,7 +64,8 @@
 <li>
 <code><a href="../reference/install_docling.html">install_docling()</a></code> / <code><a href="../reference/docling_available.html">docling_available()</a></code> manage the Python backend.</li>
 </ul></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

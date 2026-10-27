@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">doclingr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,11 +80,32 @@ the backend once into a managed environment, then restart R:</p>
 <span><span class="fu"><a href="../reference/install_docling.html">install_docling</a></span><span class="op">(</span><span class="op">)</span>         <span class="co"># creates an "r-docling" virtualenv</span></span>
 <span><span class="co"># ...restart R...</span></span>
 <span><span class="fu"><a href="../reference/docling_available.html">docling_available</a></span><span class="op">(</span><span class="op">)</span>       <span class="co"># TRUE</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="model-cache-and-offline-use">Model cache and offline use<a class="anchor" aria-label="anchor" href="#model-cache-and-offline-use"></a>
+</h2>
 <p>The deep-learning models (layout, tables, OCR) download on first
-conversion and are cached afterwards. To control where they are stored,
-set the Hugging Face cache before the first conversion:</p>
+conversion – several hundred megabytes – and are cached afterwards, so
+only the first run pays the cost. The cache lives in the standard
+Hugging Face location (<code>~/.cache/huggingface</code> by default). To
+control where models are stored, set <code>HF_HOME</code> before the
+first conversion (and before Python initializes):</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>HF_HOME <span class="op">=</span> <span class="st">"~/.cache/doclingr-models"</span><span class="op">)</span></span></code></pre></div>
+<p>On locked-down or air-gapped machines, populate the cache once from a
+machine with access (run one conversion of each kind you need, or copy
+the <code>HF_HOME</code> directory over), then force offline mode so
+nothing tries to reach the network:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span></span>
+<span>  HF_HOME        <span class="op">=</span> <span class="st">"/shared/doclingr-models"</span>,</span>
+<span>  HF_HUB_OFFLINE <span class="op">=</span> <span class="st">"1"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>With <code>HF_HUB_OFFLINE = "1"</code>, conversions use only what is
+already in the cache and fail fast (instead of hanging on a blocked
+connection) if a model is missing. Both variables must be set before the
+first conversion in the R session; the safest place is
+<code>.Renviron</code> or the shell environment.</p>
 </div>
 <div class="section level2">
 <h2 id="ocr">OCR<a class="anchor" aria-label="anchor" href="#ocr"></a>
@@ -92,7 +113,7 @@ set the Hugging Face cache before the first conversion:</p>
 <p>OCR reads text from scanned pages and images. It is on by default.
 For born-digital PDFs (exported from Word, LaTeX, etc.) the text layer
 is already present, so turning OCR off is a large, safe speed-up:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">doc</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/docling_convert.html">docling_convert</a></span><span class="op">(</span><span class="st">"born-digital.pdf"</span>, ocr <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>Leave OCR on for scans, photographs of documents, or anything where
 text is “painted” into an image.</p>
@@ -100,7 +121,7 @@ text is “painted” into an image.</p>
 <div class="section level2">
 <h2 id="table-structure-accurate-vs--fast">Table structure: accurate vs. fast<a class="anchor" aria-label="anchor" href="#table-structure-accurate-vs--fast"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Best structure (default) -- complex, spanning, nested tables</span></span>
 <span><span class="fu"><a href="../reference/docling_convert.html">docling_convert</a></span><span class="op">(</span><span class="st">"report.pdf"</span>, table_mode <span class="op">=</span> <span class="st">"accurate"</span><span class="op">)</span></span>
 <span></span>
@@ -112,7 +133,7 @@ text is “painted” into an image.</p>
 </h2>
 <p>Pick the device the models run on, and optionally the CPU thread
 count:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/docling_convert.html">docling_convert</a></span><span class="op">(</span><span class="st">"report.pdf"</span>, device <span class="op">=</span> <span class="st">"mps"</span><span class="op">)</span>               <span class="co"># Apple Silicon</span></span>
 <span><span class="fu"><a href="../reference/docling_convert.html">docling_convert</a></span><span class="op">(</span><span class="st">"report.pdf"</span>, device <span class="op">=</span> <span class="st">"cuda"</span><span class="op">)</span>              <span class="co"># NVIDIA GPU</span></span>
 <span><span class="fu"><a href="../reference/docling_convert.html">docling_convert</a></span><span class="op">(</span><span class="st">"report.pdf"</span>, device <span class="op">=</span> <span class="st">"cpu"</span>, num_threads <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></code></pre></div>
@@ -123,7 +144,7 @@ count:</p>
 </h2>
 <p>By default images are not retained, which keeps results small. Ask
 for them when you want to save figures or work with page images:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">doc</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/docling_convert.html">docling_convert</a></span><span class="op">(</span><span class="st">"paper.pdf"</span>, images <span class="op">=</span> <span class="cn">TRUE</span>, images_scale <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">figs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/docling_figures.html">docling_figures</a></span><span class="op">(</span><span class="va">doc</span>, image_dir <span class="op">=</span> <span class="st">"figures"</span><span class="op">)</span></span>
 <span><span class="va">figs</span></span></code></pre></div>
@@ -135,7 +156,7 @@ it for crisper figure exports at the cost of memory.</p>
 </h2>
 <p>Pass a vector of sources to convert them in one batch; the result is
 a named list of documents:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">docs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/docling_convert.html">docling_convert</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a.pdf"</span>, <span class="st">"b.docx"</span>, <span class="st">"c.html"</span><span class="op">)</span>,</span>
 <span>  ocr        <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -150,7 +171,7 @@ a named list of documents:</p>
 </h2>
 <p>For a large pile of born-digital reports where you mostly care about
 text and tables:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">docs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/docling_convert.html">docling_convert</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="st">"reports"</span>, pattern <span class="op">=</span> <span class="st">"[.]pdf$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  ocr        <span class="op">=</span> <span class="cn">FALSE</span>,      <span class="co"># no scans</span></span>

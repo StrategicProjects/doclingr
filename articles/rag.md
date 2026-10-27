@@ -94,12 +94,15 @@ instead of an in-memory matrix.
 ## 4. Persist
 
 Converting and embedding are the expensive steps. Save the corpus so you
-only pay once:
+only pay once.
+[`docling_write_chunks()`](https://strategicprojects.github.io/doclingr/reference/docling_write_chunks.md)
+stores every column — including the `embedding` and `doc_items`
+list-columns — in Parquet or Feather:
 
 ``` r
 
-arrow::write_parquet(corpus, "corpus.parquet")
-# later:
+docling_write_chunks(corpus, "corpus.parquet")
+# later (or from Python/DuckDB -- it is a plain Parquet file):
 corpus <- arrow::read_parquet("corpus.parquet")
 ```
 

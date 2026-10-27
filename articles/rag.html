@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">doclingr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -146,11 +146,13 @@ instead of an in-memory matrix.</p>
 <h2 id="persist">4. Persist<a class="anchor" aria-label="anchor" href="#persist"></a>
 </h2>
 <p>Converting and embedding are the expensive steps. Save the corpus so
-you only pay once:</p>
+you only pay once. <code><a href="../reference/docling_write_chunks.html">docling_write_chunks()</a></code> stores every
+column — including the <code>embedding</code> and <code>doc_items</code>
+list-columns — in Parquet or Feather:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">arrow</span><span class="fu">::</span><span class="fu">write_parquet</span><span class="op">(</span><span class="va">corpus</span>, <span class="st">"corpus.parquet"</span><span class="op">)</span></span>
-<span><span class="co"># later:</span></span>
-<span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">arrow</span><span class="fu">::</span><span class="fu">read_parquet</span><span class="op">(</span><span class="st">"corpus.parquet"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/docling_write_chunks.html">docling_write_chunks</a></span><span class="op">(</span><span class="va">corpus</span>, <span class="st">"corpus.parquet"</span><span class="op">)</span></span>
+<span><span class="co"># later (or from Python/DuckDB -- it is a plain Parquet file):</span></span>
+<span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">arrow</span><span class="fu">::</span><span class="fu"><a href="https://arrow.apache.org/docs/r/reference/read_parquet.html" class="external-link">read_parquet</a></span><span class="op">(</span><span class="st">"corpus.parquet"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="scaling-to-many-documents">Scaling to many documents<a class="anchor" aria-label="anchor" href="#scaling-to-many-documents"></a>

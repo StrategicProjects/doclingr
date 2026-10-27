@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">doclingr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -212,7 +212,7 @@ a database, or an in-memory nearest-neighbor index for RAG.</p>
 <li>Use <code>as_json(doc)</code> when you need the full structural
 detail Docling captured.</li>
 <li>Persist <code>corpus</code> (for example with
-<code>arrow::write_parquet()</code>) to avoid re-converting and
+<code><a href="https://arrow.apache.org/docs/r/reference/write_parquet.html" class="external-link">arrow::write_parquet()</a></code>) to avoid re-converting and
 re-embedding.</li>
 <li>See the <a href="https://docling-project.github.io/docling/" class="external-link">Docling
 documentation</a> for the breadth of supported formats and pipeline

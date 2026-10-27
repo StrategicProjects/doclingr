@@ -72,6 +72,14 @@ with one row per chunk and columns:
 
 - `n_doc_items` — number of underlying document items in the chunk.
 
+- `doc_items` — list-column of provenance tibbles, one row per document
+  item occurrence, with columns `self_ref`, `label`, `page`,
+  `char_start` and `char_end`. The character span locates the occurrence
+  within the originating item's text, 1-based and inclusive (ready for
+  [`substr()`](https://rdrr.io/r/base/substr.html)). Spans and pages
+  come from layout analysis, so they are `NA` for formats without
+  provenance (e.g. 'Markdown' sources).
+
 ## Details
 
 The hybrid chunker is token-aware: it packs content up to a token budget

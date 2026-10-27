@@ -18,14 +18,38 @@ install_docling()         # creates an "r-docling" virtualenv
 docling_available()       # TRUE
 ```
 
+## Model cache and offline use
+
 The deep-learning models (layout, tables, OCR) download on first
-conversion and are cached afterwards. To control where they are stored,
-set the Hugging Face cache before the first conversion:
+conversion – several hundred megabytes – and are cached afterwards, so
+only the first run pays the cost. The cache lives in the standard
+Hugging Face location (`~/.cache/huggingface` by default). To control
+where models are stored, set `HF_HOME` before the first conversion (and
+before Python initializes):
 
 ``` r
 
 Sys.setenv(HF_HOME = "~/.cache/doclingr-models")
 ```
+
+On locked-down or air-gapped machines, populate the cache once from a
+machine with access (run one conversion of each kind you need, or copy
+the `HF_HOME` directory over), then force offline mode so nothing tries
+to reach the network:
+
+``` r
+
+Sys.setenv(
+  HF_HOME        = "/shared/doclingr-models",
+  HF_HUB_OFFLINE = "1"
+)
+```
+
+With `HF_HUB_OFFLINE = "1"`, conversions use only what is already in the
+cache and fail fast (instead of hanging on a blocked connection) if a
+model is missing. Both variables must be set before the first conversion
+in the R session; the safest place is `.Renviron` or the shell
+environment.
 
 ## OCR
 

@@ -40,9 +40,11 @@ Mine tables and figures.
 
 ## RAG pipeline
 
-Chunk documents and attach embeddings.
+Chunk documents, attach embeddings, persist for indexing.
 
 - [`docling_chunk()`](https://strategicprojects.github.io/doclingr/reference/docling_chunk.md)
   : Split a document into RAG-ready chunks
 - [`docling_embed()`](https://strategicprojects.github.io/doclingr/reference/docling_embed.md)
   : Attach embeddings to chunks
+- [`docling_write_chunks()`](https://strategicprojects.github.io/doclingr/reference/docling_write_chunks.md)
+  : Write chunks (and embeddings) to Parquet or Feather
