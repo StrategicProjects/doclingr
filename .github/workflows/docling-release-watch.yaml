@@ -1,0 +1,69 @@
+# Watches PyPI for new Docling releases and opens a tracking issue.
+# Docling releases almost daily, so this runs weekly and keeps a single
+# open issue up to date instead of filing one per upstream release.
+on:
+  schedule:
+    - cron: '0 9 * * 1' # Mondays 09:00 UTC
+  workflow_dispatch:
+
+name: docling-release-watch
+
+permissions:
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Check PyPI and file/update issue
+        run: |
+          set -euo pipefail
+
+          latest=$(curl -fsSL https://pypi.org/pypi/docling/json | jq -r '.info.version')
+          echo "Latest docling on PyPI: $latest"
+
+          gh label create docling-release \
+            --description "Upstream Docling release to validate against" \
+            --color 1D76DB --force
+
+          # Already filed (open or closed) for this version? Then nothing to do.
+          if gh issue list --state all --label docling-release --json title \
+               --jq '.[].title' | grep -qF "Docling $latest"; then
+            echo "Issue for $latest already exists; nothing to do."
+            exit 0
+          fi
+
+          body=$(cat <<EOF
+          A new Docling version is available on PyPI: **$latest**.
+
+          - Release notes: https://github.com/docling-project/docling/releases/tag/v$latest
+          - PyPI: https://pypi.org/project/docling/$latest/
+          - Full changelog: https://github.com/docling-project/docling/blob/main/CHANGELOG.md
+
+          ### Validation checklist
+
+          - [ ] Rebuild the test venv: \`uv venv --python 3.13 <dir> && uv pip install docling\`
+          - [ ] Run the full suite: \`RETICULATE_PYTHON=<dir>/bin/python R -e 'devtools::test(".")'\`
+          - [ ] Spot-check known API drift points: \`export_to_dataframe(doc)\` arg,
+                \`max_tokens\` on the tokenizer (not \`HybridChunker\`), chunker imports
+          - [ ] Update docs/NEWS if user-visible behavior changed
+
+          _Filed automatically by the docling-release-watch workflow._
+          EOF
+          )
+
+          # Keep a single open tracking issue: update it if one exists.
+          open=$(gh issue list --state open --label docling-release \
+                   --json number --jq '.[0].number // empty')
+          title="Docling $latest released — validate doclingr against it"
+
+          if [ -n "$open" ]; then
+            gh issue edit "$open" --title "$title"
+            gh issue comment "$open" --body "$body"
+            echo "Updated existing issue #$open for $latest."
+          else
+            gh issue create --title "$title" --label docling-release --body "$body"
+          fi
