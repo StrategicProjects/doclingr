@@ -18,6 +18,9 @@ an open-source document-understanding library. It brings layout-aware PDF/DOCX/P
 parsing, table extraction, OCR and RAG-ready chunking to R, exposing it through a
 small, tidy-friendly API built on [reticulate](https://rstudio.github.io/reticulate/).
 
+> doclingr is an independent project, not affiliated with, maintained by or
+> endorsed by the Docling project, IBM or the LF AI & Data Foundation.
+
 R already has `pdftools`, `tabulizer`, `officer`, `readtext` and friends, but no
 single "document intelligence for RAG" package. doclingr aims to fill that gap:
 take a document, understand its layout, extract its tables, preserve its
