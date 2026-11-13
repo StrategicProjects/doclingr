@@ -2,6 +2,8 @@
 
 ## doclingr 0.1.1
 
+CRAN release: 2026-10-27
+
 - [`docling_chunk()`](https://strategicprojects.github.io/doclingr/reference/docling_chunk.md)
   gains a `doc_items` list-column with per-item provenance: `self_ref`,
   `label`, `page` and a 1-based inclusive character span

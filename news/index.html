@@ -39,7 +39,7 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.1.1" id="doclingr-011">doclingr 0.1.1<a class="anchor" aria-label="anchor" href="#doclingr-011"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.1" id="doclingr-011">doclingr 0.1.1<a class="anchor" aria-label="anchor" href="#doclingr-011"></a></h2><p class="text-muted">CRAN release: 2026-10-27</p>
 <ul><li>
 <code><a href="../reference/docling_chunk.html">docling_chunk()</a></code> gains a <code>doc_items</code> list-column with per-item provenance: <code>self_ref</code>, <code>label</code>, <code>page</code> and a 1-based inclusive character span (<code>char_start</code>/<code>char_end</code>) locating each occurrence within the originating item’s text (populated by layout analysis; <code>NA</code> for formats without provenance, such as Markdown sources).</li>
 <li>New <code><a href="../reference/docling_write_chunks.html">docling_write_chunks()</a></code> persists chunk tibbles — including <code>embedding</code> and other list-columns — to Parquet or Feather via the arrow package (new optional dependency in Suggests), for hand-off to Python, DuckDB and other Arrow-aware RAG tooling.</li>
